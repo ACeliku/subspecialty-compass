@@ -3,18 +3,21 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Subspecialty Compass — Rheumatology vs. Hematology / Oncology</title>
+<title>IM Subspecialty Decision Instrument — Rheumatology vs. Hematology / Oncology</title>
 <style>
   :root {
     --bg: #faf7f2;
     --card: #ffffff;
-    --ink: #1f1c1a;
-    --muted: #6c645d;
-    --line: #e8e0d5;
+    --soft: #f5f0e8;
+    --ink: #1e1b18;
+    --muted: #665e57;
+    --line: #e6ddd1;
     --accent: #6b2d3e;
-    --accent-soft: #f5ebee;
-    --teal: #2d5a52;
-    --gold: #a67c37;
+    --accent-soft: #f6ebee;
+    --teal: #275850;
+    --teal-soft: #e9f3f1;
+    --gold: #9e7430;
+    --gold-soft: #f9f2e3;
     --radius: 16px;
   }
   * { box-sizing: border-box; }
@@ -26,332 +29,260 @@
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    padding: 24px 16px 48px;
-    line-height: 1.55;
+    padding: 24px 16px 64px;
+    line-height: 1.58;
   }
-  .wrap {
-    width: 100%;
-    max-width: 600px;
-  }
-  header {
-    text-align: center;
-    margin-bottom: 24px;
-  }
+  .wrap { width: 100%; max-width: 650px; }
+  header { text-align: center; margin-bottom: 22px; }
   .eyebrow {
-    font-size: 11px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--gold);
-    font-weight: 600;
-    margin-bottom: 6px;
+    font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--gold); font-weight: 700; margin-bottom: 6px;
   }
   h1 {
     font-family: Georgia, "Times New Roman", serif;
-    font-size: 26px;
-    font-weight: 600;
-    margin: 0 0 8px;
-    color: var(--ink);
+    font-size: 26px; font-weight: 600; margin: 0 0 8px; line-height: 1.25;
   }
-  .sub {
-    font-size: 14px;
-    color: var(--muted);
-    margin: 0 auto;
-    max-width: 460px;
-  }
+  .sub { font-size: 14px; color: var(--muted); margin: 0 auto; max-width: 500px; }
   .card {
     background: var(--card);
     border: 1px solid var(--line);
     border-radius: var(--radius);
     padding: 28px 24px;
-    box-shadow: 0 8px 28px rgba(31, 28, 26, 0.05);
+    box-shadow: 0 10px 30px rgba(30, 27, 24, 0.05);
   }
-  .progress-wrap {
-    margin-bottom: 22px;
+  .hidden { display: none !important; }
+
+  /* Intro */
+  .dim-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 18px 0 22px;
   }
+  @media (max-width: 520px) { .dim-grid { grid-template-columns: 1fr; } }
+  .dim-chip {
+    background: var(--soft); border-radius: 10px; padding: 10px 12px; font-size: 13px;
+  }
+  .dim-chip strong { display: block; font-size: 12.5px; color: var(--ink); margin-bottom: 2px; }
+  .dim-chip span { color: var(--muted); font-size: 12px; }
+  .note-banner {
+    background: var(--gold-soft); border-left: 3px solid var(--gold);
+    padding: 11px 14px; border-radius: 0 10px 10px 0; font-size: 13px;
+    color: #533e1b; margin-bottom: 20px;
+  }
+
+  /* Quiz */
+  .progress-wrap { margin-bottom: 20px; }
   .progress-meta {
-    display: flex;
-    justify-content: space-between;
-    font-size: 12px;
-    color: var(--muted);
-    margin-bottom: 8px;
-    font-weight: 500;
+    display: flex; justify-content: space-between; font-size: 12px;
+    color: var(--muted); margin-bottom: 7px; font-weight: 600;
   }
-  .progress-bar {
-    height: 6px;
-    background: var(--line);
-    border-radius: 99px;
-    overflow: hidden;
-  }
+  .progress-bar { height: 6px; background: var(--line); border-radius: 99px; overflow: hidden; }
   .progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent), var(--gold));
-    border-radius: 99px;
-    transition: width 0.3s ease;
+    height: 100%; background: linear-gradient(90deg, var(--teal), var(--accent));
+    border-radius: 99px; transition: width 0.25s ease;
   }
-  .cat-pill {
-    display: inline-block;
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--accent);
-    background: var(--accent-soft);
-    padding: 4px 10px;
-    border-radius: 99px;
-    font-weight: 600;
-    margin-bottom: 14px;
+  .part-tag {
+    display: inline-block; font-size: 11px; letter-spacing: 0.09em;
+    text-transform: uppercase; font-weight: 700; padding: 4px 10px;
+    border-radius: 99px; margin-bottom: 12px;
+    color: var(--accent); background: var(--accent-soft);
   }
-  .question-text {
+  .part-tag.scenario { color: var(--teal); background: var(--teal-soft); }
+  .part-tag.weight { color: var(--gold); background: var(--gold-soft); }
+  .q-text {
     font-family: Georgia, "Times New Roman", serif;
-    font-size: 20px;
-    line-height: 1.45;
-    margin: 0 0 22px;
-    color: var(--ink);
+    font-size: 19.5px; line-height: 1.46; margin: 0 0 8px;
   }
-  .scale-grid {
-    display: grid;
-    gap: 10px;
-  }
+  .q-hint { font-size: 13px; color: var(--muted); margin: 0 0 20px; }
+  .opts { display: grid; gap: 9px; }
   .opt-btn {
-    width: 100%;
-    text-align: left;
-    background: #fcfaf7;
-    border: 1.5px solid var(--line);
-    border-radius: 12px;
-    padding: 13px 16px;
-    font-size: 14.5px;
-    color: var(--ink);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    transition: all 0.16s ease;
+    width: 100%; text-align: left; background: #fcfaf7;
+    border: 1.5px solid var(--line); border-radius: 12px;
+    padding: 13px 15px; font-size: 14px; color: var(--ink);
+    cursor: pointer; display: flex; align-items: flex-start; gap: 12px;
+    transition: all 0.14s ease; line-height: 1.45;
   }
-  .opt-btn:hover {
-    border-color: var(--accent);
-    background: var(--accent-soft);
-  }
-  .opt-btn.selected {
-    border-color: var(--accent);
-    background: var(--accent);
-    color: #fff;
-  }
+  .opt-btn:hover { border-color: var(--accent); background: var(--accent-soft); }
+  .opt-btn.selected { border-color: var(--accent); background: var(--accent); color: #fff; }
   .opt-num {
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    background: rgba(107, 45, 62, 0.1);
-    color: var(--accent);
-    font-weight: 700;
-    font-size: 12.5px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
+    width: 24px; height: 24px; border-radius: 50%; margin-top: 1px;
+    background: rgba(107, 45, 62, 0.11); color: var(--accent);
+    font-weight: 700; font-size: 12px; display: inline-flex;
+    align-items: center; justify-content: center; flex-shrink: 0;
   }
-  .opt-btn.selected .opt-num {
-    background: rgba(255,255,255,0.22);
-    color: #fff;
-  }
+  .opt-btn.selected .opt-num { background: rgba(255,255,255,0.22); color: #fff; }
   .nav-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 22px;
+    display: flex; justify-content: space-between; align-items: center; margin-top: 22px;
   }
   .btn-ghost {
-    background: transparent;
-    border: 1px solid var(--line);
-    color: var(--muted);
-    padding: 9px 16px;
-    border-radius: 10px;
-    font-size: 13.5px;
-    cursor: pointer;
+    background: transparent; border: 1px solid var(--line); color: var(--muted);
+    padding: 9px 15px; border-radius: 10px; font-size: 13.5px; cursor: pointer;
   }
-  .btn-ghost:hover:not(:disabled) {
-    border-color: var(--ink);
-    color: var(--ink);
-  }
+  .btn-ghost:hover:not(:disabled) { border-color: var(--ink); color: var(--ink); }
   .btn-ghost:disabled { opacity: 0.35; cursor: default; }
   .btn-primary {
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    padding: 12px 22px;
-    border-radius: 10px;
-    font-size: 14.5px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: opacity 0.15s ease;
+    background: var(--accent); color: #fff; border: none;
+    padding: 12px 20px; border-radius: 10px; font-size: 14.5px;
+    font-weight: 600; cursor: pointer; transition: opacity 0.15s ease;
   }
   .btn-primary:hover { opacity: 0.92; }
-  .hidden { display: none; }
 
   /* Results */
-  .result-badge {
-    display: inline-block;
-    font-size: 11px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    font-weight: 700;
-    color: var(--teal);
-    background: #e9f2f0;
-    padding: 5px 12px;
-    border-radius: 99px;
-    margin-bottom: 10px;
+  .res-badge {
+    display: inline-block; font-size: 11px; letter-spacing: 0.13em;
+    text-transform: uppercase; font-weight: 700; padding: 5px 12px;
+    border-radius: 99px; margin-bottom: 10px;
+    color: var(--teal); background: var(--teal-soft);
   }
-  .result-title {
+  .res-badge.split { color: var(--gold); background: var(--gold-soft); }
+  .res-title {
     font-family: Georgia, "Times New Roman", serif;
-    font-size: 27px;
-    margin: 0 0 8px;
+    font-size: 27px; margin: 0 0 8px; line-height: 1.25;
   }
-  .result-lead {
-    color: var(--muted);
-    font-size: 14.5px;
-    margin: 0 0 24px;
+  .res-lead { font-size: 14.5px; color: var(--muted); margin: 0 0 22px; }
+  .sec-h {
+    font-size: 11.5px; letter-spacing: 0.13em; text-transform: uppercase;
+    color: var(--muted); font-weight: 700; margin: 26px 0 12px;
+    padding-bottom: 6px; border-bottom: 1px solid var(--line);
   }
-  .section-h {
-    font-size: 12px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-    font-weight: 700;
-    margin: 22px 0 12px;
-  }
-  .bar-row {
-    margin-bottom: 13px;
-  }
+  .bar-row { margin-bottom: 13px; }
   .bar-top {
-    display: flex;
-    justify-content: space-between;
-    font-size: 14.5px;
-    font-weight: 600;
-    margin-bottom: 5px;
+    display: flex; justify-content: space-between; font-size: 14.5px;
+    font-weight: 600; margin-bottom: 5px;
   }
-  .bar-track {
-    height: 11px;
-    background: #efeae2;
-    border-radius: 99px;
-    overflow: hidden;
-  }
-  .bar-fill {
-    height: 100%;
-    border-radius: 99px;
-    transition: width 0.5s ease;
-  }
+  .bar-track { height: 12px; background: #efeae2; border-radius: 99px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 99px; }
   .fill-rheum { background: var(--teal); }
   .fill-hemeonc { background: var(--accent); }
-  .axis-row {
-    margin-bottom: 12px;
-    font-size: 13px;
+
+  .subscore-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px;
   }
-  .axis-labels {
-    display: flex;
-    justify-content: space-between;
-    color: var(--muted);
-    margin-bottom: 4px;
+  @media (max-width: 520px) { .subscore-grid { grid-template-columns: 1fr; } }
+  .subscore-card {
+    background: var(--soft); border-radius: 12px; padding: 12px 14px;
+  }
+  .subscore-card .lbl {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--muted); font-weight: 700; margin-bottom: 4px;
+  }
+  .subscore-card .val { font-size: 15px; font-weight: 700; color: var(--ink); }
+  .subscore-card .desc { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+
+  .axis-row { margin-bottom: 14px; }
+  .axis-top {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-size: 12.5px; margin-bottom: 4px;
+  }
+  .axis-name { font-weight: 700; color: var(--ink); font-size: 12.5px; }
+  .axis-verdict { font-size: 11.5px; font-weight: 600; color: var(--muted); }
+  .axis-poles {
+    display: flex; justify-content: space-between; font-size: 11.5px;
+    color: var(--muted); margin-bottom: 4px;
   }
   .axis-track {
-    position: relative;
-    height: 7px;
-    background: #efeae2;
-    border-radius: 99px;
+    position: relative; height: 8px; background: #efeae2; border-radius: 99px;
+  }
+  .axis-mid {
+    position: absolute; left: 50%; top: -2px; bottom: -2px; width: 2px;
+    background: #d2c8ba; transform: translateX(-50%);
   }
   .axis-dot {
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: var(--ink);
-    border: 2px solid #fff;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+    position: absolute; top: 50%; transform: translate(-50%, -50%);
+    width: 15px; height: 15px; border-radius: 50%;
+    background: var(--ink); border: 2.5px solid #fff;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.28);
   }
-  .insight-box {
-    background: #faf7f2;
-    border-left: 3px solid var(--accent);
-    padding: 14px 16px;
-    border-radius: 0 10px 10px 0;
-    margin-top: 14px;
-    font-size: 14px;
+  .box {
+    background: #faf7f2; border-left: 3.5px solid var(--accent);
+    padding: 14px 16px; border-radius: 0 12px 12px 0;
+    margin-bottom: 12px; font-size: 13.8px;
   }
-  .insight-box strong { display: block; margin-bottom: 4px; color: var(--ink); }
-  .actions {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-top: 24px;
+  .box.teal { border-left-color: var(--teal); background: #f2f8f6; }
+  .box.gold { border-left-color: var(--gold); background: #fbf6eb; }
+  .box strong.title { display: block; margin-bottom: 5px; font-size: 14px; color: var(--ink); }
+  .box ul { margin: 6px 0 0; padding-left: 18px; }
+  .box li { margin-bottom: 5px; }
+
+  .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .copied-msg { font-size: 13px; color: var(--teal); font-weight: 600; align-self: center; }
+
+  @media print {
+    body { background: #fff; padding: 0; }
+    .card { box-shadow: none; border: none; padding: 8px; }
+    .actions { display: none; }
   }
-  .copied-msg {
-    font-size: 13px;
-    color: var(--teal);
-    font-weight: 600;
-    align-self: center;
-  }
-  .intro-list {
-    margin: 16px 0 24px;
-    padding-left: 18px;
-    color: var(--muted);
-    font-size: 14px;
-  }
-  .intro-list li { margin-bottom: 6px; }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <div class="eyebrow">Internal Medicine Fellowship Compass</div>
+    <div class="eyebrow">Internal Medicine Fellowship Decision Instrument</div>
     <h1>Rheumatology vs. Hematology / Oncology</h1>
-    <p class="sub">15 clinical &amp; lifestyle questions built for an Internal Medicine resident weighing Rheumatology against Hematology / Oncology.</p>
+    <p class="sub">An attending-perspective diagnostic assessment covering clinical reasoning, bad-day tolerance, emotional load, prestige bias, and long-term career architecture.</p>
   </header>
 
   <!-- INTRO -->
   <div id="introCard" class="card">
-    <p style="margin-top:0;font-size:15px;">Answer by gut instinct — not what sounds prestigious on paper, and not what others expect. Picture an <strong>average Tuesday</strong> five years from now.</p>
-    <ul class="intro-list">
-      <li><strong>15 quick questions</strong> (~2–3 minutes)</li>
-      <li>Places you cleanly between <strong>Rheumatology</strong> and <strong>Hematology / Oncology</strong></li>
-      <li>Maps 5 core dimensions: clinical reasoning, emotional carrying cost, acuity &amp; lifestyle margin, routine tolerance, and GCC career fit</li>
-    </ul>
-    <button class="btn-primary" onclick="startQuiz()" style="width:100%;">Begin Assessment</button>
+    <p style="margin-top:0;font-size:15px;">Most residents choose a fellowship based on the <strong>most exciting 10%</strong> of a rotation. Long-term attending satisfaction is decided by the <strong>routine 70%</strong> and the <strong>hardest 20%</strong>.</p>
+    <p style="font-size:14px;color:var(--muted);margin-top:8px;">This 36-item instrument (~7 minutes) is built to surface tensions you may not have put side by side yet:</p>
+    <div class="dim-grid">
+      <div class="dim-chip"><strong>1. Ambiguity vs. Proof</strong><span>Gray-zone clinical synthesis vs. biopsy &amp; molecular certainty</span></div>
+      <div class="dim-chip"><strong>2. Bad-Day Tolerance</strong><span>Chronic pain &amp; paperwork vs. relapse &amp; futile-care pressure</span></div>
+      <div class="dim-chip"><strong>3. Emotional Carrying Cost</strong><span>Quality-of-life restoration vs. mortality &amp; goals-of-care</span></div>
+      <div class="dim-chip"><strong>4. Iatrogenic Risk &amp; Acuity</strong><span>Outpatient cadence vs. neutropenia, TLS &amp; acute toxicity</span></div>
+      <div class="dim-chip"><strong>5. Clinical Craft</strong><span>MSK exam, US &amp; joints vs. smears, marrow &amp; staging</span></div>
+      <div class="dim-chip"><strong>6. Prestige vs. Daily Joy</strong><span>Detects when status pull diverges from Tuesday energy</span></div>
+      <div class="dim-chip"><strong>7. Academic &amp; GCC Reality</strong><span>Undersupplied private clinic vs. tertiary cancer center</span></div>
+      <div class="dim-chip"><strong>8. Head vs. Life Alignment</strong><span>Flags if intellectual pull &amp; life sustainability disagree</span></div>
+    </div>
+    <div class="note-banner"><strong>How to answer:</strong> Go with your honest gut reaction — not what an attending would applaud. Progress saves automatically on your device, and nothing is sent anywhere.</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button id="startBtn" class="btn-primary" onclick="startQuiz(false)" style="flex:1;">Begin Assessment (36 Items)</button>
+      <button id="resumeBtn" class="btn-ghost hidden" onclick="startQuiz(true)">Resume Saved Progress</button>
+    </div>
   </div>
 
   <!-- QUIZ -->
   <div id="quizCard" class="card hidden">
     <div class="progress-wrap">
       <div class="progress-meta">
-        <span id="stepLabel">Question 1 of 15</span>
-        <span id="pctLabel">7%</span>
+        <span id="stepLabel">Item 1 of 36</span>
+        <span id="pctLabel">3%</span>
       </div>
-      <div class="progress-bar"><div id="progressFill" class="progress-fill" style="width:7%"></div></div>
+      <div class="progress-bar"><div id="progressFill" class="progress-fill" style="width:3%"></div></div>
     </div>
-    <div id="catPill" class="cat-pill"></div>
-    <h2 id="qText" class="question-text"></h2>
-    <div id="optsWrap" class="scale-grid"></div>
+    <div id="partTag" class="part-tag"></div>
+    <h2 id="qText" class="q-text"></h2>
+    <p id="qHint" class="q-hint"></p>
+    <div id="optsWrap" class="opts"></div>
     <div class="nav-row">
       <button id="backBtn" class="btn-ghost" onclick="goBack()">← Back</button>
-      <span style="font-size:12px;color:var(--muted);">Tap an answer to continue</span>
+      <span id="navHint" style="font-size:12px;color:var(--muted);">Tap an option to continue</span>
     </div>
   </div>
 
   <!-- RESULTS -->
   <div id="resultCard" class="card hidden">
-    <div class="result-badge" id="resBadge">Primary Match</div>
-    <h2 class="result-title" id="resTitle"></h2>
-    <p class="result-lead" id="resLead"></p>
+    <div id="resBadge" class="res-badge">Placement</div>
+    <h2 id="resTitle" class="res-title"></h2>
+    <p id="resLead" class="res-lead"></p>
 
-    <div class="section-h">Subspecialty Placement</div>
+    <div class="sec-h">Overall Subspecialty Placement</div>
     <div id="barsWrap"></div>
 
-    <div class="section-h">Your 5-Axis Clinical Profile</div>
+    <div class="subscore-grid" id="splitWrap"></div>
+
+    <div class="sec-h">Your 8-Dimension Clinical Map</div>
     <div id="axesWrap"></div>
 
-    <div class="insight-box" id="whyBox"></div>
-    <div class="insight-box" id="watchoutBox" style="border-left-color: var(--gold);"></div>
-    <div class="insight-box" id="testBox" style="border-left-color: var(--teal);"></div>
+    <div class="sec-h">Diagnostic Insights &amp; Blind-Spot Checks</div>
+    <div id="detectorsWrap"></div>
+
+    <div class="sec-h">Saudi / GCC Fellowship Context &amp; Next-Rotation Tests</div>
+    <div id="actionWrap"></div>
 
     <div class="actions">
       <button class="btn-primary" onclick="copySummary()">Copy Results Summary</button>
+      <button class="btn-ghost" onclick="window.print()">Save / Print PDF</button>
       <button class="btn-ghost" onclick="restartQuiz()">Retake</button>
       <span id="copiedMsg" class="copied-msg hidden">Copied!</span>
     </div>
@@ -359,6 +290,8 @@
 </div>
 
 <script>
+const STORAGE_KEY = "im_compass_v2_answers";
+
 const SCALE = [
   { val: 1, label: "Strongly Disagree" },
   { val: 2, label: "Disagree" },
@@ -367,125 +300,410 @@ const SCALE = [
   { val: 5, label: "Strongly Agree" }
 ];
 
-// Positive 'rheum' vs positive 'hemeonc'
+// Each question belongs to an axis AND a bucket:
+// bucket: 'intellect' (clinical/scientific head) | 'sustain' (emotion/acuity/lifestyle/bad-day) | 'prestige' (status detector) | 'gut' (vignette) | 'weight' (user priority)
+// w.rheum / w.hemeonc: weights for overall fit
+// axis.dir: -1 = Rheumatology pole, +1 = Hematology/Oncology pole
 const QUESTIONS = [
+  // --- 1. DIAGNOSTIC AMBIGUITY VS TISSUE CERTAINTY (4) ---
   {
-    cat: "Clinical Thinking",
-    text: "I get more excited solving a murky multisystem diagnostic mystery (rash, joints, kidneys, antibodies) than running targeted protocols against a known aggressive diagnosis.",
-    type: "scale",
-    w: { rheum: 2.2, hemeonc: -1.8 },
-    axis: { key: "thinking", dir: -1 }
+    part: "Part I · Clinical Reasoning", tagClass: "",
+    text: "I genuinely enjoy working in diagnostic gray zones — seronegative arthritis, overlapping connective tissue disease, or borderline antibodies where clinical judgment outweighs any single lab test.",
+    hint: "Rheumatology frequently requires treating before a single definitive test exists.",
+    type: "scale", bucket: "intellect",
+    w: { rheum: 2.2, hemeonc: -1.4 },
+    axis: { key: "ambiguity", dir: -1 }
   },
   {
-    cat: "Clinical Thinking",
-    text: "Fast-moving molecular and cancer biology — immunotherapy, targeted agents, CAR-T, genomics, and trials reshaping care every year — genuinely thrills me.",
-    type: "scale",
-    w: { rheum: -0.6, hemeonc: 2.2 },
-    axis: { key: "thinking", dir: 1 }
-  },
-  {
-    cat: "Clinical Thinking",
-    text: "Lab-driven blood & malignancy puzzles (cytopenias, smears, lymphomas, leukemias, coagulopathy) feel more intellectually gripping to me than musculoskeletal exams and autoimmune serologies.",
-    type: "scale",
+    part: "Part I · Clinical Reasoning", tagClass: "",
+    text: "I strongly prefer having hard diagnostic proof — biopsy, flow cytometry, cytogenetics, and staging scans — so I know with precision what enemy I am treating.",
+    hint: "Hematology/Oncology is built around tissue and molecular confirmation.",
+    type: "scale", bucket: "intellect",
     w: { rheum: -1.4, hemeonc: 2.2 },
-    axis: { key: "thinking", dir: 1 }
+    axis: { key: "ambiguity", dir: 1 }
   },
   {
-    cat: "Emotional Weight",
-    text: "Walking closely with seriously ill or terminal cancer patients — and leading hard goals-of-care conversations — gives me deep purpose rather than draining me.",
-    type: "scale",
-    w: { rheum: -1.2, hemeonc: 2.4 },
+    part: "Part I · Clinical Reasoning", tagClass: "",
+    text: "Following a puzzling multisystem patient over 3–6 months as the true diagnosis slowly declares itself sounds fascinating rather than frustrating.",
+    hint: "",
+    type: "scale", bucket: "intellect",
+    w: { rheum: 2.0, hemeonc: -0.8 },
+    axis: { key: "ambiguity", dir: -1 }
+  },
+  {
+    part: "Part I · Clinical Reasoning", tagClass: "",
+    text: "Fast-evolving molecular therapeutics — targeted inhibitors, checkpoint immunotherapy, bispecifics, and CAR-T rewriting guidelines every 12 months — excite me more than any other area of medicine.",
+    hint: "",
+    type: "scale", bucket: "intellect",
+    w: { rheum: -0.5, hemeonc: 2.3 },
+    axis: { key: "research", dir: 1 }
+  },
+
+  // --- 2. HANDS-ON CRAFT & CLINICAL IDENTITY (4) ---
+  {
+    part: "Part I · Clinical Craft", tagClass: "",
+    text: "I love the tactile side of internal medicine: careful musculoskeletal/joint exams, spotting subtle synovitis or rashes, MSK ultrasound, and doing quick clinic joint aspirations or injections.",
+    hint: "",
+    type: "scale", bucket: "intellect",
+    w: { rheum: 2.2, hemeonc: -1.0 },
+    axis: { key: "craft", dir: -1 }
+  },
+  {
+    part: "Part I · Clinical Craft", tagClass: "",
+    text: "Blood smears, coagulation pathways, cytopenia workups, marrow pathology, and staging radiology feel more intellectually native to me than musculoskeletal exams.",
+    hint: "",
+    type: "scale", bucket: "intellect",
+    w: { rheum: -1.2, hemeonc: 2.2 },
+    axis: { key: "craft", dir: 1 }
+  },
+  {
+    part: "Part I · Clinical Craft", tagClass: "",
+    text: "I want to stay a broad, whole-body internist — connecting skin, kidneys, lungs, nerves, eyes, and joints in the same clinic — rather than narrowing heavily around malignancy protocols.",
+    hint: "",
+    type: "scale", bucket: "intellect",
+    w: { rheum: 2.0, hemeonc: -1.2 },
+    axis: { key: "craft", dir: -1 }
+  },
+  {
+    part: "Part I · Clinical Craft", tagClass: "",
+    text: "I am drawn to being part of multidisciplinary tumor boards, clinical trials, and high-complexity academic oncology or malignant hematology programs.",
+    hint: "",
+    type: "scale", bucket: "intellect",
+    w: { rheum: -0.6, hemeonc: 2.0 },
+    axis: { key: "research", dir: 1 }
+  },
+
+  // --- 3. EMOTIONAL CARRYING COST & MORTALITY (4) ---
+  {
+    part: "Part I · Emotional Sustainability", tagClass: "",
+    text: "Guiding seriously ill or terminal patients and their families through diagnosis, relapse, and goals-of-care conversations gives me deep purpose rather than eroding me.",
+    hint: "Be honest about how you feel *after* a week of hard family meetings.",
+    type: "scale", bucket: "sustain",
+    w: { rheum: -1.0, hemeonc: 2.4 },
     axis: { key: "emotion", dir: 1 }
   },
   {
-    cat: "Emotional Weight",
-    text: "When a patient I bond with deteriorates or dies, I carry that grief home in my chest long after my shift ends.",
-    type: "scale",
-    w: { rheum: 2.2, hemeonc: -2.0 },
+    part: "Part I · Emotional Sustainability", tagClass: "",
+    text: "When a patient I care about deteriorates or dies young, I tend to carry that heaviness home in my chest long after the shift ends.",
+    hint: "",
+    type: "scale", bucket: "sustain",
+    w: { rheum: 2.4, hemeonc: -2.2 },
     axis: { key: "emotion", dir: -1 }
   },
   {
-    cat: "Emotional Weight",
-    text: "Restoring a young patient's mobility, energy, and normal daily life over years feels just as fulfilling to me as fighting life-threatening malignancy.",
-    type: "scale",
-    w: { rheum: 2.0, hemeonc: -0.6 },
+    part: "Part I · Emotional Sustainability", tagClass: "",
+    text: "Helping a 28-year-old with lupus or rheumatoid arthritis regain pain-free years of normal life feels just as meaningful to me as fighting cancer.",
+    hint: "",
+    type: "scale", bucket: "sustain",
+    w: { rheum: 2.0, hemeonc: -0.5 },
     axis: { key: "emotion", dir: -1 }
   },
   {
-    cat: "Acuity & Rhythm",
-    text: "I genuinely enjoy high-acuity inpatient consults and urgent sick-patient calls (febrile neutropenia, tumor lysis, blast crisis, cord compression).",
-    type: "scale",
-    w: { rheum: -1.6, hemeonc: 2.0 },
+    part: "Part I · Emotional Sustainability", tagClass: "",
+    text: "I suspect I might feel slightly restless in a specialty where life-or-death stakes are rare.",
+    hint: "",
+    type: "scale", bucket: "sustain",
+    w: { rheum: -1.8, hemeonc: 2.0 },
+    axis: { key: "emotion", dir: 1 }
+  },
+
+  // --- 4. IATROGENIC RISK & ACUITY (4) ---
+  {
+    part: "Part I · Acuity & Risk", tagClass: "",
+    text: "I am comfortable prescribing potent therapies knowing my own regimen will routinely hospitalize patients (neutropenic sepsis, severe cytopenias, CRS, or organ toxicity).",
+    hint: "In Heme/Onc, narrow-therapeutic-index toxicity is daily reality.",
+    type: "scale", bucket: "sustain",
+    w: { rheum: -1.2, hemeonc: 2.2 },
     axis: { key: "acuity", dir: 1 }
   },
   {
-    cat: "Lifestyle & Horizon",
-    text: "Having predictable outpatient hours, minimal nights/weekends, and real space for marriage, family, and personal life is a top-3 priority for me.",
-    type: "scale",
+    part: "Part I · Acuity & Risk", tagClass: "",
+    text: "High-acuity inpatient consults — tumor lysis, blast crisis, cord compression, massive thrombosis — genuinely energize me.",
+    hint: "",
+    type: "scale", bucket: "sustain",
+    w: { rheum: -1.5, hemeonc: 2.1 },
+    axis: { key: "acuity", dir: 1 }
+  },
+  {
+    part: "Part I · Acuity & Risk", tagClass: "",
+    text: "I thrive in a calm, predominantly outpatient cognitive rhythm where true middle-of-the-night emergencies are rare.",
+    hint: "",
+    type: "scale", bucket: "sustain",
+    w: { rheum: 2.3, hemeonc: -1.6 },
+    axis: { key: "acuity", dir: -1 }
+  },
+  {
+    part: "Part I · Acuity & Risk", tagClass: "",
+    text: "I hate leaving the hospital with unstable inpatients on my mind all weekend.",
+    hint: "",
+    type: "scale", bucket: "sustain",
+    w: { rheum: 1.9, hemeonc: -1.8 },
+    axis: { key: "acuity", dir: -1 }
+  },
+
+  // --- 5. BAD-DAY & ROUTINE TOLERANCE (4) ---
+  {
+    part: "Part I · The Bad-Day Test", tagClass: "",
+    text: "I can handle seeing chronic widespread pain, fibromyalgia, osteoarthritis, and normal-lab fatigue referrals regularly without losing patience or burning out.",
+    hint: "This is the #1 routine frustration practicing rheumatologists cite.",
+    type: "scale", bucket: "sustain",
+    w: { rheum: 2.3, hemeonc: -1.1 },
+    axis: { key: "badday", dir: -1 }
+  },
+  {
+    part: "Part I · The Bad-Day Test", tagClass: "",
+    text: "Patients with vague, subjective pain and normal objective workups drain me much faster than genuinely sick cancer patients do.",
+    hint: "",
+    type: "scale", bucket: "sustain",
+    w: { rheum: -2.1, hemeonc: 1.9 },
+    axis: { key: "badday", dir: 1 }
+  },
+  {
+    part: "Part I · The Bad-Day Test", tagClass: "",
+    text: "Managing repetitive chemo toxicities, surveillance scans, relapse news, and families pushing for futile fourth-line therapy is a burden I could sustain for 20 years.",
+    hint: "This is the #1 routine frustration practicing oncologists cite.",
+    type: "scale", bucket: "sustain",
+    w: { rheum: -1.3, hemeonc: 2.3 },
+    axis: { key: "badday", dir: 1 }
+  },
+  {
+    part: "Part I · The Bad-Day Test", tagClass: "",
+    text: "Chronic biologic prior-authorizations and slow, incremental symptom titration (waiting 12 weeks to see if a DMARD works) sound far more bearable to me than relentless acute mortality.",
+    hint: "",
+    type: "scale", bucket: "sustain",
+    w: { rheum: 2.0, hemeonc: -1.5 },
+    axis: { key: "badday", dir: -1 }
+  },
+
+  // --- 6. PRESTIGE VS INTRINSIC FIT DETECTOR (3) ---
+  {
+    part: "Part I · Motivation Check", tagClass: "",
+    text: "Part of Hematology/Oncology's appeal to me is that it feels more prestigious, intense, or 'serious' in medical culture than an outpatient specialty.",
+    hint: "No right answer — almost every ambitious resident feels some version of this.",
+    type: "scale", bucket: "prestige",
+    w: { rheum: 0, hemeonc: 0 }, // deliberately zero weight on true placement! Used strictly for Prestige Bias detector.
+    axis: { key: "prestige", dir: 1 }
+  },
+  {
+    part: "Part I · Motivation Check", tagClass: "",
+    text: "A quiet part of me worries that choosing Rheumatology might make peers or attendings think I picked the 'easier' or less ambitious route.",
+    hint: "",
+    type: "scale", bucket: "prestige",
+    w: { rheum: 0, hemeonc: 0 },
+    axis: { key: "prestige", dir: 1 }
+  },
+  {
+    part: "Part I · Motivation Check", tagClass: "",
+    text: "I would happily choose a less 'dramatic' specialty if it gave me better daily joy, strong clinical mastery, and a richer life outside the hospital.",
+    hint: "",
+    type: "scale", bucket: "prestige",
+    w: { rheum: 1.4, hemeonc: -0.6 },
+    axis: { key: "prestige", dir: -1 }
+  },
+
+  // --- 7. LIFESTYLE, FAMILY SEASON & GCC PRACTICE (5) ---
+  {
+    part: "Part I · Career & Life Architecture", tagClass: "",
+    text: "Protecting predictable hours, weekends, and genuine presence for marriage, family, and personal life over the next 5–10 years is a non-negotiable priority.",
+    hint: "",
+    type: "scale", bucket: "sustain",
     w: { rheum: 2.4, hemeonc: -1.8 },
     axis: { key: "lifestyle", dir: -1 }
   },
   {
-    cat: "Lifestyle & Horizon",
-    text: "Finishing fellowship in 2 years instead of 3 — reaching consultant independence sooner — meaningfully tips the scale for me.",
-    type: "scale",
-    w: { rheum: 1.9, hemeonc: -1.4 },
+    part: "Part I · Career & Life Architecture", tagClass: "",
+    text: "Finishing fellowship in 2 years (Rheumatology) instead of 3 heavier years (Hematology or Oncology) — reaching consultant autonomy sooner — significantly matters to my life timeline.",
+    hint: "",
+    type: "scale", bucket: "sustain",
+    w: { rheum: 2.0, hemeonc: -1.4 },
     axis: { key: "lifestyle", dir: -1 }
   },
   {
-    cat: "Lifestyle & Horizon",
-    text: "I don't mind an intense, demanding 3-year fellowship if it puts me inside a major tertiary cancer center with deep subspecialty prestige and research.",
-    type: "scale",
-    w: { rheum: -1.0, hemeonc: 2.0 },
+    part: "Part I · Career & Life Architecture", tagClass: "",
+    text: "I am willing to invest 3 demanding fellowship years (plus heavier call and potential sub-fellowship/research) to build a career in a major tertiary cancer/hematology center.",
+    hint: "",
+    type: "scale", bucket: "sustain",
+    w: { rheum: -1.0, hemeonc: 2.1 },
     axis: { key: "lifestyle", dir: 1 }
   },
   {
-    cat: "Bread & Butter Test",
-    text: "I could see chronic joint pain, osteoarthritis, fibromyalgia, and routine biologic follow-ups every week without feeling bored or frustrated.",
-    type: "scale",
-    w: { rheum: 2.2, hemeonc: -1.2 },
-    axis: { key: "routine", dir: -1 }
+    part: "Part I · Career & Life Architecture", tagClass: "",
+    text: "Being in a severely undersupplied GCC clinic specialty with strong private/VIP outpatient scalability and easy geographic mobility appeals strongly to me.",
+    hint: "Rheumatology has steep waitlists and high private clinic demand across Saudi Arabia & the Gulf.",
+    type: "scale", bucket: "intellect",
+    w: { rheum: 2.0, hemeonc: -0.6 },
+    axis: { key: "research", dir: -1 }
   },
   {
-    cat: "Bread & Butter Test",
-    text: "Managing chemotherapy regimens, side-effect toxicities, surveillance scans, and relapse conversations feels like work I could sustain for 20 years.",
-    type: "scale",
-    w: { rheum: -1.4, hemeonc: 2.4 },
-    axis: { key: "routine", dir: 1 }
+    part: "Part I · Career & Life Architecture", tagClass: "",
+    text: "Specifically on the blood/cancer side, I am noticeably more drawn to benign & malignant blood disorders (anemias, thrombosis, sickle cell, lymphoma) than to solid-tumor chemotherapy.",
+    hint: "Important under SCFHS, where Adult Hematology and Medical Oncology are separate fellowships.",
+    type: "scale", bucket: "hemeFlag",
+    w: { rheum: 0.2, hemeonc: 1.0 },
+    axis: null
   },
+
+  // --- PART II: ATTENDING-LEVEL SCENARIOS (6 FORCED CHOICES) ---
   {
-    cat: "GCC & Practice Style",
-    text: "I love the idea of an undersupplied outpatient specialty where I can easily build a flexible, high-demand private or VIP clinic alongside or after hospital work.",
-    type: "scale",
-    w: { rheum: 2.0, hemeonc: -0.8 },
-    axis: { key: "lifestyle", dir: -1 }
-  },
-  {
-    cat: "Gut Check — Clinic Day",
-    text: "Pick the Tuesday clinic that leaves you more energized at 4:00 PM:",
-    type: "choice",
+    part: "Part II · Real-World Scenarios", tagClass: "scenario",
+    text: "The 4:00 PM Tuesday Test: Which full clinic leaves you feeling more alive when you walk to your car?",
+    hint: "Picture the actual afternoon, not the textbook chapter.",
+    type: "choice", bucket: "gut",
     options: [
-      { label: "A lupus flare mystery, starting a young RA patient on a biologic, an unexplained vasculitis consult, and hands-on joint exams", w: { rheum: 5.0, hemeonc: -2.0 }, axis: { key: "thinking", val: -2 } },
-      { label: "A new lymphoma/solid-tumor staging plan, immunotherapy follow-ups, tumor board, and an acute pancytopenia consult", w: { rheum: -2.0, hemeonc: 5.0 }, axis: { key: "thinking", val: 2 } }
+      {
+        label: "A lupus flare diagnostic puzzle, a young RA patient finally pain-free on a biologic, an unexplained vasculitis consult, and two MSK joint exams.",
+        w: { rheum: 4.5, hemeonc: -2.0 }, axis: { key: "craft", val: -2 }, gut: "rheum"
+      },
+      {
+        label: "A new lymphoma/solid-tumor molecular staging plan, immunotherapy follow-ups, multidisciplinary tumor board, and an acute pancytopenia consult.",
+        w: { rheum: -2.0, hemeonc: 4.5 }, axis: { key: "craft", val: 2 }, gut: "hemeonc"
+      }
     ]
   },
   {
-    cat: "Gut Check — The Regret Test",
-    text: "Five years from now, which regret would hit you harder?",
-    type: "choice",
+    part: "Part II · Real-World Scenarios", tagClass: "scenario",
+    text: "Pick Your Worst Week: Both specialties have brutal weeks. Which bad week would you recover from faster?",
+    hint: "Attending happiness tracks bad-day tolerance more than good-day excitement.",
+    type: "choice", bucket: "gut",
     options: [
-      { label: "Feeling emotionally worn down and missing life/family margin because the illness burden and workload never truly switch off", w: { rheum: 5.0, hemeonc: -2.0 }, axis: { key: "emotion", val: -2 } },
-      { label: "Feeling under-challenged by chronic pain clinics and wishing I had chosen high-stakes molecular and cancer medicine", w: { rheum: -2.0, hemeonc: 5.0 }, axis: { key: "emotion", val: 2 } }
+      {
+        label: "10 consecutive normal-lab chronic widespread pain/fibromyalgia consults insisting you missed lupus, plus 6 rejected biologic authorizations.",
+        w: { rheum: 4.5, hemeonc: -2.0 }, axis: { key: "badday", val: -2 }, gut: "rheum"
+      },
+      {
+        label: "Two young patients relapsing on 3rd-line therapy, a neutropenic sepsis ICU transfer at 5 PM Thursday, and a grieving family demanding futile chemotherapy.",
+        w: { rheum: -2.0, hemeonc: 4.5 }, axis: { key: "badday", val: 2 }, gut: "hemeonc"
+      }
+    ]
+  },
+  {
+    part: "Part II · Real-World Scenarios", tagClass: "scenario",
+    text: "The Unseen Win: Which professional moment would make you quietly proudest at age 38?",
+    hint: "",
+    type: "choice", bucket: "gut",
+    options: [
+      {
+        label: "Catching a subtle systemic vasculitis or dermatomyositis that three other doctors missed — and watching that patient thrive for the next decade.",
+        w: { rheum: 4.2, hemeonc: -1.5 }, axis: { key: "ambiguity", val: -2 }, gut: "rheum"
+      },
+      {
+        label: "Designing a targeted molecular regimen that puts an aggressive malignancy into remission — or walking a family with grace through their hardest chapter.",
+        w: { rheum: -1.5, hemeonc: 4.2 }, axis: { key: "emotion", val: 2 }, gut: "hemeonc"
+      }
+    ]
+  },
+  {
+    part: "Part II · Real-World Scenarios", tagClass: "scenario",
+    text: "The Weekend Bandwidth Test: It is Friday evening with your family.",
+    hint: "Notice which instinct sounds genuinely like you — not who you think you 'should' be.",
+    type: "choice", bucket: "gut",
+    options: [
+      {
+        label: "I want my hospital brain genuinely switched off, with no unstable inpatient list or urgent labs pulling at my attention.",
+        w: { rheum: 4.2, hemeonc: -2.0 }, axis: { key: "acuity", val: -2 }, gut: "rheum"
+      },
+      {
+        label: "I don't mind checking counts or answering an urgent call on my sickest patients — that high-ownership intensity makes me feel deeply engaged.",
+        w: { rheum: -2.0, hemeonc: 4.2 }, axis: { key: "acuity", val: 2 }, gut: "hemeonc"
+      }
+    ]
+  },
+  {
+    part: "Part II · Real-World Scenarios", tagClass: "scenario",
+    text: "The Invisible Title Test: Imagine nobody — not peers, attendings, or relatives — ever knew the name or prestige of your specialty, and salary were identical. Which door do you walk through tomorrow?",
+    hint: "Strips away external status completely.",
+    type: "choice", bucket: "gut",
+    options: [
+      {
+        label: "Rheumatology — systemic autoimmune puzzles, hands-on clinic care, and long-term life restoration.",
+        w: { rheum: 5.5, hemeonc: -2.5 }, axis: { key: "prestige", val: -2 }, gut: "rheum", invisible: "rheum"
+      },
+      {
+        label: "Hematology / Oncology — molecular & cancer medicine, blood/marrow science, and high-stakes care.",
+        w: { rheum: -2.5, hemeonc: 5.5 }, axis: { key: "prestige", val: 2 }, gut: "hemeonc", invisible: "hemeonc"
+      }
+    ]
+  },
+  {
+    part: "Part II · Real-World Scenarios", tagClass: "scenario",
+    text: "The 10-Year Regret Inversion: Which regret would sting more a decade from now?",
+    hint: "",
+    type: "choice", bucket: "gut",
+    options: [
+      {
+        label: "Realizing I traded away emotional lightness, personal energy, and family margin for a specialty that slowly drained me.",
+        w: { rheum: 4.5, hemeonc: -2.0 }, axis: { key: "lifestyle", val: -2 }, gut: "rheum"
+      },
+      {
+        label: "Realizing I played it too safe and miss the intellectual intensity, molecular breakthroughs, and high-stakes depth of Heme/Onc.",
+        w: { rheum: -2.0, hemeonc: 4.5 }, axis: { key: "lifestyle", val: 2 }, gut: "hemeonc"
+      }
+    ]
+  },
+
+  // --- PART III: PERSONAL VALUE WEIGHTING (2) ---
+  {
+    part: "Part III · Your Decision Weights", tagClass: "weight",
+    text: "How heavily should lifestyle margin & 2-year training speed weigh in your final choice compared to pure scientific pull?",
+    hint: "This calibrates how strongly sustainability weighs in your final placement.",
+    type: "choice", bucket: "weightLife",
+    options: [
+      { label: "Heavily — my personal/family life and daily energy are just as important as the science.", mult: 1.4 },
+      { label: "Equally — I want a clean 50/50 balance between intellectual fit and life sustainability.", mult: 1.0 },
+      { label: "Lightly — if I truly love the science and mission, I will gladly absorb a heavier lifestyle.", mult: 0.65 }
+    ]
+  },
+  {
+    part: "Part III · Your Decision Weights", tagClass: "weight",
+    text: "Where do you see yourself training and practicing over the next 5–10 years?",
+    hint: "Used to tailor your Saudi / GCC / international fellowship guidance.",
+    type: "choice", bucket: "geo",
+    options: [
+      { label: "Saudi Arabia (SCFHS fellowship & Saudi tertiary or private practice)", geo: "saudi" },
+      { label: "Open to international fellowship (North America / Europe) or cross-GCC mobility", geo: "intl" },
+      { label: "Undecided — want maximum flexibility across cities and practice settings", geo: "flex" }
     ]
   }
 ];
 
 let idx = 0;
-const answers = new Array(QUESTIONS.length).fill(null);
+let answers = new Array(QUESTIONS.length).fill(null);
 let lastSummaryText = "";
 
-function startQuiz() {
+// Check saved progress
+(function initSaved() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length === QUESTIONS.length && parsed.some(v => v !== null)) {
+        document.getElementById("resumeBtn").classList.remove("hidden");
+      }
+    }
+  } catch (e) {}
+})();
+
+function saveProgress() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(answers)); } catch (e) {}
+}
+
+function startQuiz(resume) {
+  if (resume) {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      if (Array.isArray(parsed) && parsed.length === QUESTIONS.length) {
+        answers = parsed;
+        const firstNull = answers.findIndex(v => v === null);
+        idx = firstNull === -1 ? QUESTIONS.length - 1 : firstNull;
+      }
+    } catch (e) {}
+  } else {
+    answers = new Array(QUESTIONS.length).fill(null);
+    idx = 0;
+    saveProgress();
+  }
   document.getElementById("introCard").classList.add("hidden");
+  document.getElementById("resultCard").classList.add("hidden");
   document.getElementById("quizCard").classList.remove("hidden");
   renderQ();
 }
@@ -494,11 +712,18 @@ function renderQ() {
   const q = QUESTIONS[idx];
   const total = QUESTIONS.length;
   const pct = Math.round(((idx + 1) / total) * 100);
-  document.getElementById("stepLabel").textContent = `Question ${idx + 1} of ${total}`;
+  document.getElementById("stepLabel").textContent = `Item ${idx + 1} of ${total}`;
   document.getElementById("pctLabel").textContent = `${pct}%`;
   document.getElementById("progressFill").style.width = `${pct}%`;
-  document.getElementById("catPill").textContent = q.cat;
+
+  const tag = document.getElementById("partTag");
+  tag.textContent = q.part;
+  tag.className = "part-tag " + (q.tagClass || "");
+
   document.getElementById("qText").textContent = q.text;
+  const hint = document.getElementById("qHint");
+  hint.textContent = q.hint || "";
+  hint.style.display = q.hint ? "block" : "none";
   document.getElementById("backBtn").disabled = idx === 0;
 
   const wrap = document.getElementById("optsWrap");
@@ -511,6 +736,7 @@ function renderQ() {
     btn.innerHTML = `<span class="opt-num">${badge}</span><span>${item.label}</span>`;
     btn.onclick = () => {
       answers[idx] = item.val;
+      saveProgress();
       if (idx < total - 1) {
         idx++;
         renderQ();
@@ -523,43 +749,82 @@ function renderQ() {
 }
 
 function goBack() {
-  if (idx > 0) {
-    idx--;
-    renderQ();
-  }
+  if (idx > 0) { idx--; renderQ(); }
 }
 
 function showResults() {
   document.getElementById("quizCard").classList.add("hidden");
   document.getElementById("resultCard").classList.remove("hidden");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
+  // Get user lifestyle weight multiplier & geo
+  const weightQIdx = QUESTIONS.findIndex(q => q.bucket === "weightLife");
+  const geoQIdx = QUESTIONS.findIndex(q => q.bucket === "geo");
+  const lifeMult = QUESTIONS[weightQIdx].options[answers[weightQIdx]].mult;
+  const geoPref = QUESTIONS[geoQIdx].options[answers[geoQIdx]].geo;
 
   const raw = { rheum: 0, hemeonc: 0 };
   const maxPos = { rheum: 0, hemeonc: 0 };
   const minPos = { rheum: 0, hemeonc: 0 };
 
+  // Separate Head (intellect) vs Sustainability (sustain)
+  const head = { rheum: 0, hemeonc: 0, spanR: 0, spanH: 0 };
+  const sust = { rheum: 0, hemeonc: 0, spanR: 0, spanH: 0 };
+
   const axes = {
-    thinking: { sum: 0, max: 0 },
-    emotion: { sum: 0, max: 0 },
-    acuity: { sum: 0, max: 0 },
+    ambiguity: { sum: 0, max: 0 },
+    craft:     { sum: 0, max: 0 },
+    emotion:   { sum: 0, max: 0 },
+    acuity:    { sum: 0, max: 0 },
+    badday:    { sum: 0, max: 0 },
+    research:  { sum: 0, max: 0 },
     lifestyle: { sum: 0, max: 0 },
-    routine: { sum: 0, max: 0 }
+    prestige:  { sum: 0, max: 0 }
   };
+
+  let prestigePullSum = 0; // Q21 + Q22 (higher = stronger Heme/Onc status pull)
+  let invisibleChoice = null;
+  let gutRheum = 0, gutHeme = 0;
+  let benignHemeScore = 3;
 
   QUESTIONS.forEach((q, i) => {
     const ans = answers[i];
+    if (q.bucket === "weightLife" || q.bucket === "geo") return;
+
+    if (q.bucket === "hemeFlag") {
+      benignHemeScore = ans;
+    }
+
+    const mult = (q.bucket === "sustain") ? lifeMult : 1.0;
+
     if (q.type === "scale") {
-      const centered = ans - 3;
+      const c = ans - 3; // -2..+2
+      if (q.bucket === "prestige" && q.w.rheum === 0 && q.w.hemeonc === 0) {
+        prestigePullSum += ans; // range 2..10
+      }
       ["rheum", "hemeonc"].forEach(k => {
-        raw[k] += centered * q.w[k];
-        maxPos[k] += Math.abs(q.w[k]) * 2;
-        minPos[k] -= Math.abs(q.w[k]) * 2;
+        const wt = q.w[k] * mult;
+        raw[k] += c * wt;
+        maxPos[k] += Math.abs(wt) * 2;
+        minPos[k] -= Math.abs(wt) * 2;
       });
+      if (q.bucket === "intellect") {
+        head.rheum += c * q.w.rheum; head.spanR += Math.abs(q.w.rheum) * 2;
+        head.hemeonc += c * q.w.hemeonc; head.spanH += Math.abs(q.w.hemeonc) * 2;
+      }
+      if (q.bucket === "sustain") {
+        sust.rheum += c * q.w.rheum; sust.spanR += Math.abs(q.w.rheum) * 2;
+        sust.hemeonc += c * q.w.hemeonc; sust.spanH += Math.abs(q.w.hemeonc) * 2;
+      }
       if (q.axis && axes[q.axis.key]) {
-        axes[q.axis.key].sum += centered * q.axis.dir;
+        axes[q.axis.key].sum += c * q.axis.dir;
         axes[q.axis.key].max += Math.abs(q.axis.dir) * 2;
       }
-    } else {
+    } else if (q.type === "choice" && q.w === undefined && q.options[ans].w) {
       const opt = q.options[ans];
+      if (opt.gut === "rheum") gutRheum++;
+      if (opt.gut === "hemeonc") gutHeme++;
+      if (opt.invisible) invisibleChoice = opt.invisible;
       ["rheum", "hemeonc"].forEach(k => {
         raw[k] += opt.w[k];
         const vals = q.options.map(o => o.w[k]);
@@ -573,99 +838,235 @@ function showResults() {
     }
   });
 
-  const pcts = {};
-  ["rheum", "hemeonc"].forEach(k => {
-    const span = maxPos[k] - minPos[k] || 1;
-    pcts[k] = Math.round(((raw[k] - minPos[k]) / span) * 100);
-  });
+  const normPct = (val, mn, mx) => Math.round(((val - mn) / ((mx - mn) || 1)) * 100);
+  const rheumPct = normPct(raw.rheum, minPos.rheum, maxPos.rheum);
+  const hemePct  = normPct(raw.hemeonc, minPos.hemeonc, maxPos.hemeonc);
+
+  const headRheumPct = normPct(head.rheum, -head.spanR, head.spanR);
+  const headHemePct  = normPct(head.hemeonc, -head.spanH, head.spanH);
+  const sustRheumPct = normPct(sust.rheum, -sust.spanR, sust.spanR);
+  const sustHemePct  = normPct(sust.hemeonc, -sust.spanH, sust.spanH);
+
+  const headLean = headRheumPct >= headHemePct ? "Rheumatology" : "Hematology / Oncology";
+  const sustLean = sustRheumPct >= sustHemePct ? "Rheumatology" : "Hematology / Oncology";
+  const headSustConflict = (headLean !== sustLean) && (Math.abs(headRheumPct - headHemePct) >= 8) && (Math.abs(sustRheumPct - sustHemePct) >= 8);
 
   const ranked = [
-    { key: "rheum", name: "Rheumatology", pct: pcts.rheum, cls: "fill-rheum" },
-    { key: "hemeonc", name: "Hematology / Oncology", pct: pcts.hemeonc, cls: "fill-hemeonc" }
+    { key: "rheum", name: "Rheumatology", pct: rheumPct, cls: "fill-rheum" },
+    { key: "hemeonc", name: "Hematology / Oncology", pct: hemePct, cls: "fill-hemeonc" }
   ].sort((a, b) => b.pct - a.pct);
 
   const top = ranked[0];
-  const diff = ranked[0].pct - ranked[1].pct;
-  const closeCall = diff <= 10;
+  const margin = ranked[0].pct - ranked[1].pct;
+  const isClose = margin <= 10;
 
-  const profiles = {
-    rheum: {
-      title: closeCall ? "Lean: Rheumatology (Close Call)" : "Rheumatology",
-      lead: closeCall
-        ? "You feel the pull of Hematology / Oncology's depth, yet your day-to-day energy, emotional sustainability, and lifestyle priorities tip toward Rheumatology."
-        : "Your answers point clearly toward diagnostic detective medicine, long-term quality-of-life impact, and a sustainable outpatient career with real life margin.",
-      why: "<strong>Why Rheumatology fits you:</strong> You thrive on multisystem diagnostic puzzles, longitudinal patient relationships, and protecting both your emotional bandwidth and personal life. In Saudi Arabia and the GCC, Rheumatology also offers a faster 2-year fellowship, severe specialist undersupply, and strong private/VIP clinic flexibility.",
-      watchout: "<strong>The honest watch-out:</strong> Routine rheumatology includes plenty of chronic nonspecific pain, osteoarthritis, and fibromyalgia alongside the fascinating lupus and vasculitis cases. Make sure the bread-and-butter clinic still feels satisfying.",
-      test: "<strong>Your rotation tiebreaker:</strong> Shadow a full outpatient Rheumatology week and notice how you feel after 15 routine follow-ups — not just the one rare vasculitis case."
-    },
-    hemeonc: {
-      title: closeCall ? "Lean: Hematology / Oncology (Close Call)" : "Hematology / Oncology",
-      lead: closeCall
-        ? "You appreciate Rheumatology's calmer rhythm, yet you're strongly drawn to the molecular depth, acuity, and high-stakes purpose of Hematology / Oncology."
-        : "Your profile aligns with fast-moving molecular and malignant medicine, high-stakes decision-making, and guiding patients through life-defining battles.",
-      why: "<strong>Why Hematology / Oncology fits you:</strong> You're energized by rapidly evolving science (targeted therapy, immunotherapy, malignant hematology, clinical trials), comfortable with inpatient acuity and a 3-year fellowship, and find deep meaning rather than burnout in walking with critically ill patients. Note: in Saudi/SCFHS training, Adult Hematology and Medical Oncology are often separate 3-year tracks — if you love blood/marrow puzzles more than solid tumors, Adult Hematology is worth weighing specifically.",
-      watchout: "<strong>The honest watch-out:</strong> Grief, relapse conversations, and inpatient/call load compound over years alongside marriage and family. Check how you recharge after a heavy week of bad news.",
-      test: "<strong>Your rotation tiebreaker:</strong> Shadow an attending through a full week of progression/goals-of-care visits — if you leave feeling grounded and purposeful rather than hollow, Heme/Onc is home."
-    }
-  };
+  // Badge & Title
+  const badge = document.getElementById("resBadge");
+  if (isClose) {
+    badge.textContent = "Genuine Crossroads — Close Margin";
+    badge.className = "res-badge split";
+  } else {
+    badge.textContent = margin >= 24 ? "Strong Placement" : "Clear Placement";
+    badge.className = "res-badge";
+  }
 
-  const p = profiles[top.key];
-  document.getElementById("resBadge").textContent = closeCall ? "Close Match — Weigh the Tiebreaker" : "Clear Placement";
-  document.getElementById("resTitle").textContent = p.title;
-  document.getElementById("resLead").textContent = p.lead;
+  let titleText = top.name;
+  let leadText = "";
+  if (isClose) {
+    titleText = `Slight Lean: ${top.name} (${ranked[0].pct}% vs ${ranked[1].pct}%)`;
+    leadText = "You sit in a genuine crossroads — neither specialty is a false choice for you, which means the specific tensions below (Head vs. Sustainability, Bad-Day tolerance, and Saudi track structure) matter far more than the headline percentage.";
+  } else if (top.key === "rheum") {
+    titleText = "Rheumatology";
+    leadText = "Across clinical style, bad-day resilience, emotional sustainability, and long-term career architecture, your profile aligns clearly with Rheumatology.";
+  } else {
+    titleText = "Hematology / Oncology";
+    leadText = "Across clinical reasoning, molecular ambition, acuity appetite, and emotional purpose, your profile aligns clearly with Hematology / Oncology.";
+  }
+  document.getElementById("resTitle").textContent = titleText;
+  document.getElementById("resLead").textContent = leadText;
 
-  const barsWrap = document.getElementById("barsWrap");
-  barsWrap.innerHTML = ranked.map(r => `
+  // Main Bars
+  document.getElementById("barsWrap").innerHTML = ranked.map(r => `
     <div class="bar-row">
       <div class="bar-top"><span>${r.name}</span><span>${r.pct}%</span></div>
       <div class="bar-track"><div class="bar-fill ${r.cls}" style="width:${r.pct}%"></div></div>
     </div>
   `).join("");
 
+  // Subscores: Clinical Head vs Life/Emotional Sustainability vs Scenarios
+  document.getElementById("splitWrap").innerHTML = `
+    <div class="subscore-card">
+      <div class="lbl">Clinical / Intellectual Pull</div>
+      <div class="val">${headLean}</div>
+      <div class="desc">Rheum ${headRheumPct}% · Heme/Onc ${headHemePct}%</div>
+    </div>
+    <div class="subscore-card">
+      <div class="lbl">Emotional &amp; Life Sustainability</div>
+      <div class="val">${sustLean}</div>
+      <div class="desc">Rheum ${sustRheumPct}% · Heme/Onc ${sustHemePct}%</div>
+    </div>
+    <div class="subscore-card">
+      <div class="lbl">Real-World Scenarios (6 Vignettes)</div>
+      <div class="val">${gutRheum > gutHeme ? "Rheumatology" : (gutHeme > gutRheum ? "Heme / Onc" : "Split 3–3")}</div>
+      <div class="desc">Rheum ${gutRheum}/6 · Heme/Onc ${gutHeme}/6</div>
+    </div>
+    <div class="subscore-card">
+      <div class="lbl">Invisible-Title Gut Choice</div>
+      <div class="val">${invisibleChoice === "rheum" ? "Rheumatology" : "Hematology / Oncology"}</div>
+      <div class="desc">When prestige &amp; titles are stripped away</div>
+    </div>
+  `;
+
+  // 8 Axes
   const axisDefs = [
-    { key: "thinking", left: "Diagnostic Detective (Rheum)", right: "Molecular / Cancer (Heme-Onc)" },
-    { key: "emotion", left: "Chronic QoL Focus", right: "High-Mortality Purpose" },
-    { key: "acuity", left: "Outpatient Rhythm", right: "Inpatient Acuity" },
-    { key: "lifestyle", left: "Life Margin & 2-Yr Speed", right: "3-Yr Tertiary Intensity" },
-    { key: "routine", left: "Autoimmune / MSK Routine", right: "Chemo / Malignancy Routine" }
+    { key: "ambiguity", name: "1. Diagnostic Style", left: "Gray-Zone Synthesis (Rheum)", right: "Tissue & Molecular Proof (Heme/Onc)" },
+    { key: "craft",     name: "2. Daily Clinical Craft", left: "MSK Exam / Whole-Body IM", right: "Smears / Staging / Malignancy" },
+    { key: "emotion",   name: "3. Emotional Carrying Cost", left: "Chronic QoL Restoration", right: "High-Mortality Purpose" },
+    { key: "acuity",    name: "4. Acuity & Iatrogenic Risk", left: "Outpatient Calm & Margin", right: "Inpatient Acuity & Cytotoxicity" },
+    { key: "badday",    name: "5. Bad-Day Resilience", left: "Absorbs Chronic Pain / PA Friction", right: "Absorbs Relapse / Toxicity Burden" },
+    { key: "research",  name: "6. Practice & Science Horizon", left: "Outpatient / Private Agility", right: "Trials & Tertiary Oncology" },
+    { key: "lifestyle", name: "7. Training & Life Timeline", left: "2-Yr Speed & Family Margin", right: "3-Yr High-Intensity Tertiary" },
+    { key: "prestige",  name: "8. Status / Identity Pull", left: "Title-Independent", right: "Strong Heme/Onc Prestige Pull" }
   ];
 
-  const axesWrap = document.getElementById("axesWrap");
-  axesWrap.innerHTML = axisDefs.map(a => {
-    const obj = axes[a.key];
-    const norm = obj.max ? Math.round(((obj.sum + obj.max) / (2 * obj.max)) * 100) : 50;
-    const clamped = Math.max(6, Math.min(94, norm));
+  document.getElementById("axesWrap").innerHTML = axisDefs.map(a => {
+    const o = axes[a.key];
+    const pct = o.max ? Math.round(((o.sum + o.max) / (2 * o.max)) * 100) : 50;
+    const clamped = Math.max(5, Math.min(95, pct));
+    let verdict = "Balanced";
+    if (pct <= 38) verdict = "Strong Rheum pole";
+    else if (pct <= 46) verdict = "Leans Rheum";
+    else if (pct >= 62) verdict = "Strong Heme/Onc pole";
+    else if (pct >= 54) verdict = "Leans Heme/Onc";
+    if (a.key === "prestige") {
+      verdict = pct >= 60 ? "Noticeable status pull" : (pct <= 40 ? "Low status bias" : "Moderate");
+    }
     return `
       <div class="axis-row">
-        <div class="axis-labels"><span>${a.left}</span><span>${a.right}</span></div>
-        <div class="axis-track"><div class="axis-dot" style="left:${clamped}%"></div></div>
+        <div class="axis-top"><span class="axis-name">${a.name}</span><span class="axis-verdict">${verdict}</span></div>
+        <div class="axis-poles"><span>${a.left}</span><span>${a.right}</span></div>
+        <div class="axis-track"><div class="axis-mid"></div><div class="axis-dot" style="left:${clamped}%"></div></div>
       </div>
     `;
   }).join("");
 
-  document.getElementById("whyBox").innerHTML = p.why;
-  document.getElementById("watchoutBox").innerHTML = p.watchout;
-  document.getElementById("testBox").innerHTML = p.test;
+  // Diagnostic Detectors
+  const detectors = [];
+
+  // Detector A: Head vs Sustainability Split
+  if (headSustConflict) {
+    if (headLean === "Hematology / Oncology" && sustLean === "Rheumatology") {
+      detectors.push({
+        cls: "gold",
+        title: "Head vs. Sustainability Split Detected (The Classic IM Dilemma)",
+        body: `Your <strong>clinical intellect</strong> leans toward Hematology/Oncology (${headHemePct}%), while your <strong>emotional carrying cost, bad-day tolerance, and life margin</strong> lean toward Rheumatology (${sustRheumPct}%). This is the most common split among thoughtful IM residents. Two real paths resolve this cleanly: (1) <strong>Academic / Tertiary Rheumatology</strong> — keeping deep immunology, lupus nephritis, and vasculitis without oncology's mortality burden; or (2) <strong>Classical / Benign-leaning Adult Hematology</strong> (especially under SCFHS, where Hematology is separate from Medical Oncology).`
+      });
+    } else {
+      detectors.push({
+        cls: "gold",
+        title: "Head vs. Sustainability Split Detected",
+        body: `Interestingly, your <strong>clinical reasoning</strong> favors Rheumatology (${headRheumPct}%), while your <strong>acuity/intensity appetite</strong> favors Hematology/Oncology (${sustHemePct}%). Check whether you actually enjoy inpatient sick-patient consults (which also exist in tertiary Rheumatology inpatient consult services for catastrophic APS, pulmonary-renal syndromes, and HLH/MAS) more than oncology protocols themselves.`
+      });
+    }
+  } else {
+    detectors.push({
+      cls: "teal",
+      title: "Aligned Signal — Head & Sustainability Agree",
+      body: `Both your clinical/intellectual pull (${headLean}) and your emotional & lifestyle sustainability (${sustLean}) point in the same direction. When both axes align like this, long-term career regret is much rarer.`
+    });
+  }
+
+  // Detector B: Prestige Bias Check
+  const highPrestigePull = prestigePullSum >= 7; // average >= 3.5 across the 2 prestige items
+  if (highPrestigePull && (invisibleChoice === "rheum" || top.key === "rheum")) {
+    detectors.push({
+      cls: "gold",
+      title: "Prestige Trap Alert",
+      body: `You scored noticeably high on feeling the prestige/status pull of Hematology/Oncology — yet when titles are stripped away, your actual day-to-day energy favors <strong>Rheumatology</strong>. Pay close attention to this: prestige fades inside 18 months of becoming a consultant, whereas your Tuesday clinic lasts 30 years.`
+    });
+  } else if (highPrestigePull && invisibleChoice === "hemeonc") {
+    detectors.push({
+      cls: "",
+      title: "Prestige Present — But Backed by Genuine Daily Pull",
+      body: `You do feel the status appeal of Heme/Onc, <em>and</em> you still chose it on the Invisible-Title Test. That suggests the attraction isn't purely external — just keep testing whether you love the hard weeks, not only the identity.`
+    });
+  } else {
+    detectors.push({
+      cls: "teal",
+      title: "Low Prestige Distortion",
+      body: `Your answers show low susceptibility to specialty-status pressure — your placement is being driven mainly by actual clinical and lifestyle preferences rather than resident-culture optics.`
+    });
+  }
+
+  // Detector C: Bad-Day & Benign Heme Nuance
+  const baddayPct = axes.badday.max ? Math.round(((axes.badday.sum + axes.badday.max) / (2 * axes.badday.max)) * 100) : 50;
+  detectors.push({
+    cls: "",
+    title: "Bad-Day Resilience Readout",
+    body: baddayPct <= 45
+      ? `You absorb <strong>Rheumatology's</strong> baseline frustrations (chronic pain overlap, slow DMARD titration, biologic approvals) better than oncology's acute relapse and mortality weight. In attending life, that favors durable satisfaction in Rheumatology.`
+      : (baddayPct >= 55
+        ? `You tolerate <strong>Heme/Onc's</strong> heavy clinical realities (chemo toxicity, relapse conversations, sick consults) better than vague, normal-lab chronic pain clinics — a strong protective factor if you choose Heme/Onc.`
+        : `Both specialties' bad days grate on you roughly equally — meaning mentorship, hospital culture, and your specific sub-niche (e.g., complex CTD clinic vs. benign heme) will matter hugely.`)
+  });
+
+  document.getElementById("detectorsWrap").innerHTML = detectors.map(d =>
+    `<div class="box ${d.cls}"><strong class="title">${d.title}</strong>${d.body}</div>`
+  ).join("");
+
+  // Saudi / GCC & Rotation Plan
+  const geoNote = geoPref === "saudi"
+    ? `<strong>Saudi (SCFHS) Structural Note:</strong> Under SCFHS, <strong>Adult Rheumatology (2 years)</strong> is one of the highest-demand, most undersupplied specialties in both tertiary hospitals and private/VIP clinics. Meanwhile, <strong>Adult Hematology (3 years)</strong> and <strong>Adult Medical Oncology (3 years)</strong> are separate fellowships${benignHemeScore >= 4 ? " — and since you scored high on benign/malignant blood disorders over solid tumors, <strong>Adult Hematology</strong> specifically (with huge regional need in sickle cell, thalassemia, thrombosis, and lymphoma) deserves a serious look over pure Medical Oncology." : " — both well-funded under Vision 2030 tertiary cancer centers (KFSH&RC, NGHA, major oncology hubs), with heavier inpatient/call commitment."}`
+    : (geoPref === "intl"
+      ? `<strong>International / Cross-GCC Mobility Note:</strong> In North America, Hematology/Oncology is a combined 3-year fellowship (very competitive, research-heavy), while Rheumatology is 2 years (strong outpatient mobility worldwide). Across the GCC and Europe, Rheumatology transfers unusually cleanly into flexible hospital + private practice; Heme/Onc thrives best inside major tertiary hubs.`
+      : `<strong>Flexibility & Mobility Note:</strong> If keeping geographic and schedule flexibility open over the next 5–10 years matters, Rheumatology (2-year training, severe GCC undersupply, outpatient/private scalability) offers the cleanest portability. If you choose the Heme/Onc track in Saudi Arabia, remember SCFHS separates Adult Hematology (3 yrs) and Medical Oncology (3 yrs)${benignHemeScore >= 4 ? " — and your answers show notable affinity for the Hematology side specifically." : "."}`);
+
+  const tests = top.key === "rheum"
+    ? `<ul>
+        <li><strong>The 15-Routine-Patients Test:</strong> On your next Rheumatology clinic, ignore the one exciting vasculitis zebra — check how you feel after 15 routine RA/OA/fibromyalgia follow-ups.</li>
+        <li><strong>Shadow an Attending's Real Week:</strong> Ask a young female consultant in Rheumatology and one in Heme/Onc (5 years post-fellowship) one blunt question: <em>"What does your worst week look like, and how much of work comes home with you?"</em></li>
+        <li><strong>Confirm you won't miss acuity:</strong> Check if tertiary inpatient Rheum consults (lupus nephritis, catastrophic APS, vasculitis) scratch your acute-medicine itch enough.</li>
+      </ul>`
+    : `<ul>
+        <li><strong>The Progression-Week Test:</strong> Shadow an Oncology or Malignant Heme attending through a full week of relapse/bad-news clinic visits — watch how your heart feels on Friday night, not just during morning tumor board.</li>
+        <li><strong>Separate Hematology vs. Solid Oncology:</strong> Compare a Benign/Consult Heme week against a Solid Tumor Chemo clinic week — under SCFHS those are two distinct 3-year fellowships.</li>
+        <li><strong>Ask a Consultant 5 Years Out:</strong> Ask a female Heme/Onc consultant with a family how fellowship and early-consultant call actually felt in practice, and what she would keep or change.</li>
+      </ul>`;
+
+  document.getElementById("actionWrap").innerHTML = `
+    <div class="box teal"><strong class="title">Training &amp; Market Context</strong>${geoNote}</div>
+    <div class="box"><strong class="title">3 Empirical Tests for Your Remaining Rotations</strong>${tests}</div>
+  `;
 
   lastSummaryText =
-    `Subspecialty Compass Result:\n` +
-    `Placement: ${p.title}\n` +
-    ranked.map(r => `- ${r.name}: ${r.pct}%`).join("\n");
+    `IM Subspecialty Decision Instrument — Result\n` +
+    `Placement: ${titleText}\n` +
+    `- Rheumatology: ${rheumPct}%\n` +
+    `- Hematology / Oncology: ${hemePct}%\n` +
+    `Clinical Head: ${headLean} (R ${headRheumPct}% / HO ${headHemePct}%)\n` +
+    `Life & Emotional Sustainability: ${sustLean} (R ${sustRheumPct}% / HO ${sustHemePct}%)\n` +
+    `Real-World Scenarios: Rheum ${gutRheum}/6 · Heme/Onc ${gutHeme}/6\n` +
+    `Invisible-Title Choice: ${invisibleChoice === "rheum" ? "Rheumatology" : "Hematology / Oncology"}\n` +
+    `Head vs. Sustainability Split: ${headSustConflict ? "Yes" : "Aligned"}\n` +
+    `Prestige Pull: ${highPrestigePull ? "Elevated" : "Low/Balanced"}`;
 }
 
 function copySummary() {
   navigator.clipboard.writeText(lastSummaryText).then(() => {
     const msg = document.getElementById("copiedMsg");
     msg.classList.remove("hidden");
-    setTimeout(() => msg.classList.add("hidden"), 2000);
+    setTimeout(() => msg.classList.add("hidden"), 2200);
   });
 }
 
 function restartQuiz() {
+  answers = new Array(QUESTIONS.length).fill(null);
   idx = 0;
-  answers.fill(null);
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+  document.getElementById("resumeBtn").classList.add("hidden");
   document.getElementById("resultCard").classList.add("hidden");
   document.getElementById("introCard").classList.remove("hidden");
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 </script>
 </body>
