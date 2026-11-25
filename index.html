@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Subspecialty Compass — Rheumatology vs. Hematology vs. Oncology</title>
+<title>Subspecialty Compass — Rheumatology vs. Hematology / Oncology</title>
 <style>
   :root {
     --bg: #faf7f2;
@@ -223,12 +223,12 @@
   .bar-top {
     display: flex;
     justify-content: space-between;
-    font-size: 14px;
+    font-size: 14.5px;
     font-weight: 600;
     margin-bottom: 5px;
   }
   .bar-track {
-    height: 10px;
+    height: 11px;
     background: #efeae2;
     border-radius: 99px;
     overflow: hidden;
@@ -239,8 +239,7 @@
     transition: width 0.5s ease;
   }
   .fill-rheum { background: var(--teal); }
-  .fill-heme { background: var(--gold); }
-  .fill-onc { background: var(--accent); }
+  .fill-hemeonc { background: var(--accent); }
   .axis-row {
     margin-bottom: 12px;
     font-size: 13px;
@@ -303,16 +302,16 @@
   <header>
     <div class="eyebrow">Internal Medicine Fellowship Compass</div>
     <h1>Rheumatology vs. Hematology / Oncology</h1>
-    <p class="sub">16 clinical &amp; lifestyle statements designed for an IM resident deciding between Rheumatology, Hematology, and Medical Oncology.</p>
+    <p class="sub">15 clinical &amp; lifestyle questions built for an Internal Medicine resident weighing Rheumatology against Hematology / Oncology.</p>
   </header>
 
   <!-- INTRO -->
   <div id="introCard" class="card">
-    <p style="margin-top:0;font-size:15px;">Answer by gut instinct — not what sounds prestigious on paper, and not what others expect. Think about the <strong>average Tuesday</strong> five years from now.</p>
+    <p style="margin-top:0;font-size:15px;">Answer by gut instinct — not what sounds prestigious on paper, and not what others expect. Picture an <strong>average Tuesday</strong> five years from now.</p>
     <ul class="intro-list">
-      <li><strong>16 quick questions</strong> (~3 minutes)</li>
-      <li>Separates <strong>Rheumatology</strong>, <strong>Hematology</strong> (benign &amp; malignant), and <strong>Medical Oncology</strong></li>
-      <li>Measures 5 real dimensions: diagnostic style, emotional load, acuity/lifestyle, bread-and-butter tolerance, and GCC practice fit</li>
+      <li><strong>15 quick questions</strong> (~2–3 minutes)</li>
+      <li>Places you cleanly between <strong>Rheumatology</strong> and <strong>Hematology / Oncology</strong></li>
+      <li>Maps 5 core dimensions: clinical reasoning, emotional carrying cost, acuity &amp; lifestyle margin, routine tolerance, and GCC career fit</li>
     </ul>
     <button class="btn-primary" onclick="startQuiz()" style="width:100%;">Begin Assessment</button>
   </div>
@@ -321,10 +320,10 @@
   <div id="quizCard" class="card hidden">
     <div class="progress-wrap">
       <div class="progress-meta">
-        <span id="stepLabel">Question 1 of 16</span>
-        <span id="pctLabel">6%</span>
+        <span id="stepLabel">Question 1 of 15</span>
+        <span id="pctLabel">7%</span>
       </div>
-      <div class="progress-bar"><div id="progressFill" class="progress-fill" style="width:6%"></div></div>
+      <div class="progress-bar"><div id="progressFill" class="progress-fill" style="width:7%"></div></div>
     </div>
     <div id="catPill" class="cat-pill"></div>
     <h2 id="qText" class="question-text"></h2>
@@ -341,7 +340,7 @@
     <h2 class="result-title" id="resTitle"></h2>
     <p class="result-lead" id="resLead"></p>
 
-    <div class="section-h">Subspecialty Fit</div>
+    <div class="section-h">Subspecialty Placement</div>
     <div id="barsWrap"></div>
 
     <div class="section-h">Your 5-Axis Clinical Profile</div>
@@ -368,125 +367,115 @@ const SCALE = [
   { val: 5, label: "Strongly Agree" }
 ];
 
-// weights: positive favors the specialty on a 1..5 scale (normalized around 3 => -2..+2)
-// axis values: positive leans right pole, negative leans left pole
+// Positive 'rheum' vs positive 'hemeonc'
 const QUESTIONS = [
   {
     cat: "Clinical Thinking",
-    text: "I get more excited solving a murky multisystem diagnostic mystery (rash, joints, kidneys, antibodies) than optimizing a complex treatment protocol for a known diagnosis.",
+    text: "I get more excited solving a murky multisystem diagnostic mystery (rash, joints, kidneys, antibodies) than running targeted protocols against a known aggressive diagnosis.",
     type: "scale",
-    w: { rheum: 2.0, heme: 0.4, onc: -1.4 },
-    axis: { key: "thinking", dir: -1 } // left: Detective/Rheum, right: Protocol/Molecular
+    w: { rheum: 2.2, hemeonc: -1.8 },
+    axis: { key: "thinking", dir: -1 }
   },
   {
     cat: "Clinical Thinking",
-    text: "Fast-moving molecular medicine — targeted therapies, immunotherapy, genomics, and clinical trials changing standards every year — genuinely thrills me.",
+    text: "Fast-moving molecular and cancer biology — immunotherapy, targeted agents, CAR-T, genomics, and trials reshaping care every year — genuinely thrills me.",
     type: "scale",
-    w: { rheum: 0.3, heme: 1.2, onc: 2.0 },
+    w: { rheum: -0.6, hemeonc: 2.2 },
     axis: { key: "thinking", dir: 1 }
   },
   {
     cat: "Clinical Thinking",
-    text: "I love lab-driven detective work: blood smears, coagulation cascades, hemoglobinopathies, and cytopenias make intuitive sense to me.",
+    text: "Lab-driven blood & malignancy puzzles (cytopenias, smears, lymphomas, leukemias, coagulopathy) feel more intellectually gripping to me than musculoskeletal exams and autoimmune serologies.",
     type: "scale",
-    w: { rheum: 0.0, heme: 2.2, onc: 0.4 },
-    axis: { key: "thinking", dir: 0.5 }
+    w: { rheum: -1.4, hemeonc: 2.2 },
+    axis: { key: "thinking", dir: 1 }
   },
   {
     cat: "Emotional Weight",
-    text: "Walking closely with seriously ill or terminal patients — and having hard goals-of-care conversations — gives me deep purpose rather than draining me.",
+    text: "Walking closely with seriously ill or terminal cancer patients — and leading hard goals-of-care conversations — gives me deep purpose rather than draining me.",
     type: "scale",
-    w: { rheum: -0.6, heme: 0.9, onc: 2.2 },
-    axis: { key: "emotion", dir: 1 } // left: Chronic QoL, right: High-Mortality Meaning
+    w: { rheum: -1.2, hemeonc: 2.4 },
+    axis: { key: "emotion", dir: 1 }
   },
   {
     cat: "Emotional Weight",
-    text: "When a patient I care about deteriorates or dies, I tend to carry that grief home in my chest long after my shift ends.",
+    text: "When a patient I bond with deteriorates or dies, I carry that grief home in my chest long after my shift ends.",
     type: "scale",
-    w: { rheum: 1.9, heme: 0.2, onc: -2.0 },
+    w: { rheum: 2.2, hemeonc: -2.0 },
     axis: { key: "emotion", dir: -1 }
   },
   {
     cat: "Emotional Weight",
-    text: "Helping a young patient with chronic autoimmune disease get their normal life, energy, and mobility back feels just as meaningful to me as saving a life in crisis.",
+    text: "Restoring a young patient's mobility, energy, and normal daily life over years feels just as fulfilling to me as fighting life-threatening malignancy.",
     type: "scale",
-    w: { rheum: 2.0, heme: 0.6, onc: -0.4 },
+    w: { rheum: 2.0, hemeonc: -0.6 },
     axis: { key: "emotion", dir: -1 }
   },
   {
     cat: "Acuity & Rhythm",
-    text: "I genuinely enjoy high-acuity inpatient consults and urgent sick-patient decisions (febrile neutropenia, tumor lysis, acute leukemia, massive thrombosis).",
+    text: "I genuinely enjoy high-acuity inpatient consults and urgent sick-patient calls (febrile neutropenia, tumor lysis, blast crisis, cord compression).",
     type: "scale",
-    w: { rheum: -1.4, heme: 1.6, onc: 1.6 },
-    axis: { key: "acuity", dir: 1 } // left: Outpatient Calm, right: Inpatient Acuity
+    w: { rheum: -1.6, hemeonc: 2.0 },
+    axis: { key: "acuity", dir: 1 }
   },
   {
     cat: "Lifestyle & Horizon",
     text: "Having predictable outpatient hours, minimal nights/weekends, and real space for marriage, family, and personal life is a top-3 priority for me.",
     type: "scale",
-    w: { rheum: 2.2, heme: 0.2, onc: -1.5 },
-    axis: { key: "lifestyle", dir: -1 } // left: Margin & Speed, right: Intensity & Prestige
+    w: { rheum: 2.4, hemeonc: -1.8 },
+    axis: { key: "lifestyle", dir: -1 }
   },
   {
     cat: "Lifestyle & Horizon",
     text: "Finishing fellowship in 2 years instead of 3 — reaching consultant independence sooner — meaningfully tips the scale for me.",
     type: "scale",
-    w: { rheum: 1.8, heme: -0.9, onc: -0.9 },
+    w: { rheum: 1.9, hemeonc: -1.4 },
     axis: { key: "lifestyle", dir: -1 }
   },
   {
     cat: "Lifestyle & Horizon",
-    text: "I don't mind an intense, demanding 3-year fellowship if it puts me inside a major tertiary center with high-prestige subspecialty depth and research.",
+    text: "I don't mind an intense, demanding 3-year fellowship if it puts me inside a major tertiary cancer center with deep subspecialty prestige and research.",
     type: "scale",
-    w: { rheum: -0.4, heme: 1.2, onc: 1.6 },
+    w: { rheum: -1.0, hemeonc: 2.0 },
     axis: { key: "lifestyle", dir: 1 }
   },
   {
     cat: "Bread & Butter Test",
     text: "I could see chronic joint pain, osteoarthritis, fibromyalgia, and routine biologic follow-ups every week without feeling bored or frustrated.",
     type: "scale",
-    w: { rheum: 2.0, heme: -0.4, onc: -0.8 },
-    axis: { key: "routine", dir: -1 } // left: Chronic MSK/Autoimmune, right: Chemo/Cytopenias
+    w: { rheum: 2.2, hemeonc: -1.2 },
+    axis: { key: "routine", dir: -1 }
   },
   {
     cat: "Bread & Butter Test",
-    text: "Managing chemotherapy regimens, side-effect toxicities, surveillance scans, and progression conversations feels like work I could sustain for 20 years.",
+    text: "Managing chemotherapy regimens, side-effect toxicities, surveillance scans, and relapse conversations feels like work I could sustain for 20 years.",
     type: "scale",
-    w: { rheum: -1.0, heme: 0.7, onc: 2.2 },
+    w: { rheum: -1.4, hemeonc: 2.4 },
     axis: { key: "routine", dir: 1 }
   },
   {
-    cat: "Bread & Butter Test",
-    text: "Seeing a mix of benign blood disorders (sickle cell, thalassemia, anemia, anticoagulation) alongside malignant hematology appeals to me more than solid tumors.",
-    type: "scale",
-    w: { rheum: 0.2, heme: 2.3, onc: -1.0 },
-    axis: { key: "routine", dir: 0.4 }
-  },
-  {
     cat: "GCC & Practice Style",
-    text: "I love the idea of being in a high-demand, undersupplied clinic specialty where I can eventually build a strong private or VIP outpatient practice.",
+    text: "I love the idea of an undersupplied outpatient specialty where I can easily build a flexible, high-demand private or VIP clinic alongside or after hospital work.",
     type: "scale",
-    w: { rheum: 2.0, heme: 0.4, onc: -0.6 },
-    axis: { key: "practice", dir: -1 } // left: Outpatient/Private Agility, right: Tertiary/Academic
+    w: { rheum: 2.0, hemeonc: -0.8 },
+    axis: { key: "lifestyle", dir: -1 }
   },
   {
     cat: "Gut Check — Clinic Day",
-    text: "Pick the Tuesday clinic that leaves you most energized at 4:00 PM:",
+    text: "Pick the Tuesday clinic that leaves you more energized at 4:00 PM:",
     type: "choice",
     options: [
-      { label: "Lupus flare puzzle, new RA starting a biologic, unexplained vasculitis, and an MSK joint exam", w: { rheum: 4.5, heme: 0, onc: 0 }, axis: { key: "thinking", val: -2 } },
-      { label: "Unexplained pancytopenia smear review, recurrent DVT workup, sickle cell clinic, and a lymphoma follow-up", w: { rheum: 0, heme: 4.5, onc: 0.8 }, axis: { key: "thinking", val: 1 } },
-      { label: "Targeted immunotherapy plan for newly diagnosed breast/lung cancer, tumor board, and guiding a family through staging", w: { rheum: 0, heme: 0.8, onc: 4.5 }, axis: { key: "thinking", val: 2 } }
+      { label: "A lupus flare mystery, starting a young RA patient on a biologic, an unexplained vasculitis consult, and hands-on joint exams", w: { rheum: 5.0, hemeonc: -2.0 }, axis: { key: "thinking", val: -2 } },
+      { label: "A new lymphoma/solid-tumor staging plan, immunotherapy follow-ups, tumor board, and an acute pancytopenia consult", w: { rheum: -2.0, hemeonc: 5.0 }, axis: { key: "thinking", val: 2 } }
     ]
   },
   {
-    cat: "Gut Check — What Would Make You Regret Choosing Wrong?",
-    text: "Which regret feels heavier to you five years from now?",
+    cat: "Gut Check — The Regret Test",
+    text: "Five years from now, which regret would hit you harder?",
     type: "choice",
     options: [
-      { label: "Being exhausted, emotionally heavy, and missing life/family time because work never really switches off", w: { rheum: 4.0, heme: 0.8, onc: -2.0 }, axis: { key: "lifestyle", val: -2 } },
-      { label: "Feeling under-challenged by chronic pain referrals and wishing I had chosen deeper, higher-stakes molecular/blood medicine", w: { rheum: -1.5, heme: 3.5, onc: 3.5 }, axis: { key: "lifestyle", val: 2 } },
-      { label: "Missing the variety of benign blood puzzles & acute consults without the nonstop grief of solid-tumor oncology", w: { rheum: 0.5, heme: 4.5, onc: -1.0 }, axis: { key: "emotion", val: 0 } }
+      { label: "Feeling emotionally worn down and missing life/family margin because the illness burden and workload never truly switch off", w: { rheum: 5.0, hemeonc: -2.0 }, axis: { key: "emotion", val: -2 } },
+      { label: "Feeling under-challenged by chronic pain clinics and wishing I had chosen high-stakes molecular and cancer medicine", w: { rheum: -2.0, hemeonc: 5.0 }, axis: { key: "emotion", val: 2 } }
     ]
   }
 ];
@@ -544,9 +533,9 @@ function showResults() {
   document.getElementById("quizCard").classList.add("hidden");
   document.getElementById("resultCard").classList.remove("hidden");
 
-  const raw = { rheum: 0, heme: 0, onc: 0 };
-  const maxPos = { rheum: 0, heme: 0, onc: 0 };
-  const minPos = { rheum: 0, heme: 0, onc: 0 };
+  const raw = { rheum: 0, hemeonc: 0 };
+  const maxPos = { rheum: 0, hemeonc: 0 };
+  const minPos = { rheum: 0, hemeonc: 0 };
 
   const axes = {
     thinking: { sum: 0, max: 0 },
@@ -559,8 +548,8 @@ function showResults() {
   QUESTIONS.forEach((q, i) => {
     const ans = answers[i];
     if (q.type === "scale") {
-      const centered = ans - 3; // -2 .. +2
-      ["rheum", "heme", "onc"].forEach(k => {
+      const centered = ans - 3;
+      ["rheum", "hemeonc"].forEach(k => {
         raw[k] += centered * q.w[k];
         maxPos[k] += Math.abs(q.w[k]) * 2;
         minPos[k] -= Math.abs(q.w[k]) * 2;
@@ -571,7 +560,7 @@ function showResults() {
       }
     } else {
       const opt = q.options[ans];
-      ["rheum", "heme", "onc"].forEach(k => {
+      ["rheum", "hemeonc"].forEach(k => {
         raw[k] += opt.w[k];
         const vals = q.options.map(o => o.w[k]);
         maxPos[k] += Math.max(...vals);
@@ -585,47 +574,43 @@ function showResults() {
   });
 
   const pcts = {};
-  ["rheum", "heme", "onc"].forEach(k => {
+  ["rheum", "hemeonc"].forEach(k => {
     const span = maxPos[k] - minPos[k] || 1;
     pcts[k] = Math.round(((raw[k] - minPos[k]) / span) * 100);
   });
 
   const ranked = [
     { key: "rheum", name: "Rheumatology", pct: pcts.rheum, cls: "fill-rheum" },
-    { key: "heme", name: "Hematology", pct: pcts.heme, cls: "fill-heme" },
-    { key: "onc", name: "Medical Oncology", pct: pcts.onc, cls: "fill-onc" }
+    { key: "hemeonc", name: "Hematology / Oncology", pct: pcts.hemeonc, cls: "fill-hemeonc" }
   ].sort((a, b) => b.pct - a.pct);
 
   const top = ranked[0];
-  const second = ranked[1];
-  const closeCall = (top.pct - second.pct) <= 7;
+  const diff = ranked[0].pct - ranked[1].pct;
+  const closeCall = diff <= 10;
 
   const profiles = {
     rheum: {
-      title: closeCall ? `Rheumatology (Close Tie with ${second.name})` : "Rheumatology",
-      lead: "Your answers point strongly toward diagnostic detective medicine, long-term quality-of-life impact, and a sustainable outpatient career with real life margin.",
-      why: "<strong>Why Rheumatology fits you:</strong> You value multisystem diagnostic reasoning, deep longitudinal patient relationships, and protecting your emotional energy and personal life. In Saudi Arabia and the GCC, Rheumatology also combines a faster 2-year fellowship with massive clinical undersupply and strong private/VIP clinic flexibility.",
-      watchout: "<strong>The honest watch-out:</strong> Every rheumatologist sees a steady stream of chronic nonspecific pain, fibromyalgia, and osteoarthritis alongside the fascinating lupus and vasculitis cases. Make sure the routine clinic day still feels rewarding.",
-      test: "<strong>Rotation test:</strong> Spend a full week shadowing a busy outpatient Rheumatology clinic — pay attention not to the one zebra vasculitis case, but to how you feel after 15 routine follow-ups."
+      title: closeCall ? "Lean: Rheumatology (Close Call)" : "Rheumatology",
+      lead: closeCall
+        ? "You feel the pull of Hematology / Oncology's depth, yet your day-to-day energy, emotional sustainability, and lifestyle priorities tip toward Rheumatology."
+        : "Your answers point clearly toward diagnostic detective medicine, long-term quality-of-life impact, and a sustainable outpatient career with real life margin.",
+      why: "<strong>Why Rheumatology fits you:</strong> You thrive on multisystem diagnostic puzzles, longitudinal patient relationships, and protecting both your emotional bandwidth and personal life. In Saudi Arabia and the GCC, Rheumatology also offers a faster 2-year fellowship, severe specialist undersupply, and strong private/VIP clinic flexibility.",
+      watchout: "<strong>The honest watch-out:</strong> Routine rheumatology includes plenty of chronic nonspecific pain, osteoarthritis, and fibromyalgia alongside the fascinating lupus and vasculitis cases. Make sure the bread-and-butter clinic still feels satisfying.",
+      test: "<strong>Your rotation tiebreaker:</strong> Shadow a full outpatient Rheumatology week and notice how you feel after 15 routine follow-ups — not just the one rare vasculitis case."
     },
-    heme: {
-      title: closeCall ? `Hematology (Close Tie with ${second.name})` : "Hematology (Benign & Malignant Bridge)",
-      lead: "You sit right in the sweet spot of lab-driven diagnostic precision, molecular science, and high-value consult medicine — without necessarily wanting pure solid-tumor oncology.",
-      why: "<strong>Why Hematology fits you:</strong> You enjoy concrete physiological/lab puzzles (smears, coagulopathy, cytopenias) and meaningful acuity while keeping a foot in curable or chronic benign conditions (like sickle cell, thalassemia, and thrombosis — huge needs in Saudi Arabia). Under SCFHS, separating Adult Hematology from Medical Oncology can give you the exact balance you want.",
-      watchout: "<strong>The honest watch-out:</strong> Malignant hematology (acute leukemias, BMT) is among the most intense and emotionally heavy inpatient services in medicine. Decide whether you want classical/benign-leaning hematology or full malignant heme.",
-      test: "<strong>Rotation test:</strong> Compare how you feel on a Benign Heme / Consult week versus an Inpatient Leukemia / BMT week — that split will tell you immediately if Hematology is home."
-    },
-    onc: {
-      title: closeCall ? `Medical Oncology (Close Tie with ${second.name})` : "Medical Oncology",
-      lead: "Your profile leans toward high-stakes molecular medicine, fast-evolving targeted therapies, and finding deep meaning in guiding patients through their hardest battles.",
-      why: "<strong>Why Medical Oncology fits you:</strong> You're drawn to cutting-edge science (immunotherapy, targeted regimens, trials), don't shy away from intense 3-year fellowship training, and feel energized rather than crushed by high-stakes, deeply human conversations with patients and families. Vision 2030 oncology centers in the Kingdom offer top-tier growth and research.",
-      watchout: "<strong>The honest watch-out:</strong> Emotional carrying cost and inpatient/call demands compound over years, especially alongside building a marriage and family. Check how you protect your heart on weeks when multiple patients progress.",
-      test: "<strong>Rotation test:</strong> Shadow an attending through a full week of breaking bad news and progression visits — if you leave feeling grounded and purposeful rather than hollow, Oncology is real for you."
+    hemeonc: {
+      title: closeCall ? "Lean: Hematology / Oncology (Close Call)" : "Hematology / Oncology",
+      lead: closeCall
+        ? "You appreciate Rheumatology's calmer rhythm, yet you're strongly drawn to the molecular depth, acuity, and high-stakes purpose of Hematology / Oncology."
+        : "Your profile aligns with fast-moving molecular and malignant medicine, high-stakes decision-making, and guiding patients through life-defining battles.",
+      why: "<strong>Why Hematology / Oncology fits you:</strong> You're energized by rapidly evolving science (targeted therapy, immunotherapy, malignant hematology, clinical trials), comfortable with inpatient acuity and a 3-year fellowship, and find deep meaning rather than burnout in walking with critically ill patients. Note: in Saudi/SCFHS training, Adult Hematology and Medical Oncology are often separate 3-year tracks — if you love blood/marrow puzzles more than solid tumors, Adult Hematology is worth weighing specifically.",
+      watchout: "<strong>The honest watch-out:</strong> Grief, relapse conversations, and inpatient/call load compound over years alongside marriage and family. Check how you recharge after a heavy week of bad news.",
+      test: "<strong>Your rotation tiebreaker:</strong> Shadow an attending through a full week of progression/goals-of-care visits — if you leave feeling grounded and purposeful rather than hollow, Heme/Onc is home."
     }
   };
 
   const p = profiles[top.key];
-  document.getElementById("resBadge").textContent = closeCall ? "Close Match — Two Strong Contenders" : "Primary Match";
+  document.getElementById("resBadge").textContent = closeCall ? "Close Match — Weigh the Tiebreaker" : "Clear Placement";
   document.getElementById("resTitle").textContent = p.title;
   document.getElementById("resLead").textContent = p.lead;
 
@@ -638,11 +623,11 @@ function showResults() {
   `).join("");
 
   const axisDefs = [
-    { key: "thinking", left: "Diagnostic Detective (Rheum)", right: "Molecular / Protocol (Heme-Onc)" },
+    { key: "thinking", left: "Diagnostic Detective (Rheum)", right: "Molecular / Cancer (Heme-Onc)" },
     { key: "emotion", left: "Chronic QoL Focus", right: "High-Mortality Purpose" },
     { key: "acuity", left: "Outpatient Rhythm", right: "Inpatient Acuity" },
     { key: "lifestyle", left: "Life Margin & 2-Yr Speed", right: "3-Yr Tertiary Intensity" },
-    { key: "routine", left: "Autoimmune / MSK Routine", right: "Chemo / Blood Routine" }
+    { key: "routine", left: "Autoimmune / MSK Routine", right: "Chemo / Malignancy Routine" }
   ];
 
   const axesWrap = document.getElementById("axesWrap");
@@ -664,7 +649,7 @@ function showResults() {
 
   lastSummaryText =
     `Subspecialty Compass Result:\n` +
-    `Top Match: ${p.title}\n` +
+    `Placement: ${p.title}\n` +
     ranked.map(r => `- ${r.name}: ${r.pct}%`).join("\n");
 }
 
